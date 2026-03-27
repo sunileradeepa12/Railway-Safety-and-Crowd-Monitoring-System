@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Railway Safety Crowd Monitoring</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+<!--Header-->
+<div class="header">
+    Railway Safety Crowd Monitoring System
+</div>
+
+<!-- NAVBAR -->
+<div class="nav">
+    <a href="/">Home</a>
+    <a href="/camera">Camera Setup</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/alerts">Alerts</a>
+    <a href="/analytics">Analytics</a>
+    <a href="/settings">Settings</a>
+</div>
+
+<div class="home-container">
+
+<!-- LEFT SIDE -->
+<div class="home-left">
+
+<h1>AI-Based Railway Safety Monitoring</h1>
+
+<p>
+This intelligent system uses Artificial Intelligence and Computer Vision
+to monitor railway station crowd levels and prevent dangerous overcrowding.
+It helps railway authorities respond quickly to safety risks.
+</p>
+
+<h2>Key Features</h2>
+
+<div class="features">
+
+<div class="feature-card">
+<i class="fa-solid fa-video"></i>
+<h3>Live Surveillance</h3>
+<p>Monitor station crowd through CCTV cameras.</p>
+</div>
+
+<div class="feature-card">
+<i class="fa-solid fa-brain"></i>
+<h3>AI Detection</h3>
+<p>Detect and count people using YOLO AI models.</p>
+</div>
+
+<div class="feature-card">
+<i class="fa-solid fa-triangle-exclamation"></i>
+<h3>Alert System</h3>
+<p>Automatic alerts when overcrowding occurs.</p>
+</div>
+
+<div class="feature-card">
+<i class="fa-solid fa-chart-column"></i>
+<h3>Analytics</h3>
+<p>Visualize crowd statistics and trends.</p>
+</div>
+
+</div>
+
+</div>
+
+<!-- RIGHT SIDE LOGIN -->
+<div class="login-box">
+
+<h2>System Login</h2>
+
+<form action="/login" method="POST">
+
+<label>Username</label>
+<input type="text" placeholder="Enter username" required>
+
+<label>Password</label>
+<input type="password" placeholder="Enter password" required>
+
+<button type="submit">Login</button>
+
+</form>
+
+<p class="login-note">Demo Login : admin / admin</p>
+
+</div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+© 2026 Railway Safety Monitoring System — Final Year Project
+</div>
+
+</body>
+</html>
