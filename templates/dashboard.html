@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Dashboard — Railway Safety System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<!--  HEADER -->
+<div class="topbar">
+     Railway Safety Crowd Monitoring — Control Dashboard
+</div>
+
+<!--  NAVBAR -->
+<div class="nav">
+    <a href="/">Home</a>
+    <a href="/camera">Camera Setup</a>
+    <a class="active" href="/dashboard">Dashboard</a>
+    <a href="/alerts">Alerts</a>
+    <a href="/analytics" class="active">Analytics</a>
+    <a href="/settings">Settings</a>
+</div>
+
+<div class="dashboard-container">
+
+    <!-- LIVE VIDEO SECTION -->
+    <div class="video-section">
+
+        <h2> Live Surveillance Feed</h2>
+
+        <div class="video-box">
+            <img id="videofeed" src="/video" width="100%">
+        </div>
+
+        <!-- ▶ CONTROL BUTTONS -->
+        <div class="control-buttons">
+
+            <a href="/start" class="btn start">▶ Start Monitoring</a>
+            <a href="/stop" class="btn stop">⏹ Stop Monitoring</a>
+
+        </div>
+
+    </div>
+
+    <!--  RIGHT SIDE PANELS -->
+    <div class="side-panels">
+
+        <!--  CROWD STATS -->
+        <div class="panel">
+    <h3> Crowd Statistics</h3>
+
+    <p><b>People Count:</b>
+        <span id="people_count">{{people_count}}</span>
+    </p>
+
+    <p><b>Risk Level:</b>
+        <span id="status">{{risk}}</span>
+    </p>
+</div>
+        <!--  LOCATION -->
+        <div class="panel">
+            <h3> Monitoring Location</h3>
+            <p>Central Railway Station</p>
+            <p>Platform 1</p>
+        </div>
+
+        <!--  SMS STATUS -->
+       <div class="panel">
+    <h3> SMS Notification</h3>
+
+    <p id="sms_status" class="pending">No Alert Sent</p>
+</div>
+        <!--  AI STATUS -->
+        <div class="panel">
+            <h3> AI System Status</h3>
+            <p id="ai_status" class="ok">✔ Monitoring Active</p>
+        </div>
+
+    </div>
+
+</div>
+
+<!--  EMERGENCY CONTROLS -->
+<div class="emergency-section">
+
+    <h2> Emergency Controls</h2>
+
+    <div class="emergency-buttons">
+
+        <a href="/manual_alert" class="btn danger"> Send Manual Alert</a>
+        <a href="/announce" class="btn warn"> Announce Evacuation</a>
+        <a href="/system_check" class="btn safe"> System Check</a>
+
+    </div>
+
+</div>
+<script>
+
+function updateDashboard() {
+
+fetch("/live_data")
+.then(response => response.json())
+.then(data => {
+
+document.getElementById("people_count").innerText = data.people
+document.getElementById("status").innerText = data.status
+
+// ALERT BANNER
+let alertBox = document.getElementById("alert_banner")
+
+if (data.alert === true) {
+
+alertBox.style.background = "red"
+alertBox.innerText = "⚠ Crowd Level HIGH"
+
+// SMS STATUS
+document.getElementById("sms_status").innerText = "Alert Sent to Authorities"
+document.getElementById("sms_status").style.color = "red"
+
+} 
+else {
+
+alertBox.style.background = "green"
+alertBox.innerText = "✓ Situation under control"
+
+// SMS STATUS
+document.getElementById("sms_status").innerText = "No Alert Sent"
+document.getElementById("sms_status").style.color = "orange"
+
+}
+
+// AI STATUS
+document.getElementById("ai_status").innerText = "✓ Monitoring Active"
+document.getElementById("ai_status").style.color = "green"
+
+})
+
+}
+
+// refresh every 2 seconds
+setInterval(updateDashboard, 2000)
+
+// run immediately
+updateDashboard()
+
+</script>
+
+</body>
+<html>
