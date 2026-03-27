@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Settings — Railway Safety</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="header">
+     Railway Safety Crowd Monitoring — Settings
+</div>
+
+<div class="nav">
+    <a href="/">Home</a>
+    <a href="/camera">Camera Setup</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/alerts">Alerts</a>
+    <a href="/analytics" class="active">Analytics</a>
+    <a href="/settings">Settings</a>
+</div>
+
+<div class="content">
+
+    <div class="settings-box">
+
+        <h2> System Configuration</h2>
+        <p>Configure monitoring behavior and emergency response settings.</p>
+        <div class="current-config">
+<h3>Current System Configuration</h3>
+
+<p><b>Alert Threshold:</b> {{ data[1] }} people</p>
+<p><b>Authority Phone:</b> {{ data[2] }}</p>
+<p><b>Station:</b> {{ data[3] }}</p>
+<p><b>Monitoring Area:</b> {{ data[4] }}</p>
+<p><b>SMS Notifications:</b> {{ data[5] }}</p>
+<p><b>Detection Sensitivity:</b> {{ data[6] }}</p>
+
+</div>
+{% if request.args.get('success') %}
+<div class="success-msg">
+Settings Saved Successfully
+</div>
+{% endif %}
+
+        <form action="/save_settings" method="POST">
+
+<!-- Alert Threshold -->
+<label>Crowd Alert Threshold (People Count)</label>
+<input type="number" name="threshold" placeholder="Example: 80">
+
+<!-- Authority Phone -->
+<label>Authority Contact Number</label>
+<input type="text" name="phone" placeholder="+91XXXXXXXXXX">
+
+<!-- Station Name -->
+<label>Station Name</label>
+<input type="text" name="station" placeholder="Central Railway Station">
+
+<!-- Monitoring Area -->
+<label>Monitoring Area</label>
+<select name="area">
+<option>Platform 1</option>
+<option>Platform 2</option>
+<option>Platform 3</option>
+</select>
+
+<!-- SMS Notification -->
+<label>SMS Notifications</label>
+<select name="sms">
+<option>Enabled</option>
+<option>Disabled</option>
+</select>
+
+<!-- Detection Sensitivity -->
+<label>Detection Sensitivity</label>
+<select name="sensitivity">
+<option>Low</option>
+<option selected>Medium</option>
+<option>High</option>
+</select>
+
+<button class="save-btn" type="submit">Save</button>
+
+</form>
+    </div>
+
+
+    <!-- System Info Panel -->
+    <div class="system-info">
+
+        <h3> System Information</h3>
+
+        <ul>
+            <li>AI Model: YOLOv8</li>
+            <li>Camera Status: Active</li>
+            <li>Network: Online</li>
+            <li>SMS Gateway: Connected</li>
+            <li>Last Updated: Just Now</li>
+        </ul>
+
+    </div>
+
+</div>
+
+</body>
+</html>
