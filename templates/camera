@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Camera Setup</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="header">
+    🎥 Camera Setup — Select Monitoring Source
+</div>
+
+<div class="nav">
+    <a href="/">Home</a>
+    <a href="/camera">Camera Setup</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/alerts">Alerts</a>
+    <a href="/analytics" class="active">Analytics</a>
+    <a href="/settings">Settings</a>
+</div>
+
+<div class="camera-container">
+
+    <h1>Select Video Source</h1>
+
+    <!-- OPTION 1 — CCTV URL -->
+    <div class="camera-box">
+
+        <h2>📡 Connect CCTV / IP Camera</h2>
+
+        <form action="/play_cctv" method="post">
+            <input type="text" name="cctv_url"
+                   placeholder="rtsp://camera-ip:port">
+
+            <button type="submit">Connect Camera</button>
+        </form>
+
+    </div>
+
+    <!-- OPTION 2 — Upload Video -->
+    <div class="camera-box">
+
+        <h2>📁 Upload Recorded Video</h2>
+
+        <form action="/camera" method="POST" enctype="multipart/form-data">
+
+<input type="file" name="video" required>
+
+<button type="submit">Upload & Monitor</button>
+
+</form>
+    </div>
+
+    <!-- OPTION 3 — Demo Videos -->
+    <div class="camera-box">
+
+        <h2>🎬 Use Demo Footage</h2>
+
+        <a href="/play_demo/platform"
+           class="btn-demo">Platform Video</a>
+
+        <a href="/play_demo/waiting"
+           class="btn-demo">Waiting Hall</a>
+
+        <a href="/play_demo/ticket"
+           class="btn-demo">Ticket Counter</a>
+
+    </div>
+
+</div>
+
+</body>
+</html>
