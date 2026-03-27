@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Analytics — Crowd Monitoring</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="header">
+Railway Safety Crowd Analytics Dashboard
+</div>
+
+<div class="nav">
+<a href="/">Home</a>
+<a href="/camera">Camera Setup</a>
+<a href="/dashboard">Dashboard</a>
+<a href="/alerts">Alerts</a>
+<a href="/analytics" class="active">Analytics</a>
+<a href="/settings">Settings</a>
+</div>
+
+
+<div class="analytics-container">
+
+<h1>System Intelligence & Crowd Analysis</h1>
+
+
+<!-- SUMMARY CARDS -->
+
+<div class="stats-grid">
+
+<div class="stat-card">
+<h3>Monitoring Status</h3>
+<p>Active</p>
+</div>
+
+<div class="stat-card">
+<h3>Live People Count</h3>
+<p id="livePeople">0</p>
+</div>
+
+<div class="stat-card">
+<h3>Current Status</h3>
+<p id="liveStatus">NORMAL</p>
+</div>
+
+</div>
+
+
+<!-- CHARTS -->
+
+<div class="charts-grid">
+
+<div class="chart-card">
+<h2>Crowd Count Distribution</h2>
+<canvas id="crowdChart"></canvas>
+</div>
+
+<div class="chart-card">
+<h2>Hourly Crowd Trend</h2>
+<canvas id="hourChart"></canvas>
+</div>
+
+<div class="chart-card">
+<h2>Alert Distribution</h2>
+<canvas id="alertChart"></canvas>
+</div>
+
+<div class="chart-card">
+<h2>Platform Crowd Comparison</h2>
+<canvas id="platformChart"></canvas>
+</div>
+
+<!-- NEW GRAPH 1 -->
+
+<div class="chart-card">
+<h2>Crowd Growth Rate</h2>
+<canvas id="growthChart"></canvas>
+</div>
+
+<!-- NEW GRAPH 2 -->
+
+<div class="chart-card">
+<h2>Safety Risk Level</h2>
+<canvas id="riskChart"></canvas>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="footer">
+© 2026 Railway Safety Monitoring System — Analytics Module
+</div>
+
+
+<script>
+
+const crowdChart = new Chart(
+document.getElementById('crowdChart'),
+{
+type:'bar',
+data:{
+labels:['Current'],
+datasets:[{
+label:'Live Crowd Count',
+data:[0],
+backgroundColor:'#3498db'
+}]
+}
+}
+)
+
+
+const hourChart = new Chart(
+document.getElementById('hourChart'),
+{
+type:'line',
+data:{
+labels:[],
+datasets:[{
+label:'Crowd Trend',
+data:[],
+borderColor:'#27ae60',
+fill:false
+}]
+}
+}
+)
+
+
+const alertChart = new Chart(
+document.getElementById('alertChart'),
+{
+type:'doughnut',
+data:{
+labels:['Normal','Alert'],
+datasets:[{
+data:[1,0],
+backgroundColor:['#2ecc71','#e74c3c']
+}]
+}
+}
+)
+
+
+const platformChart = new Chart(
+document.getElementById('platformChart'),
+{
+type:'bar',
+data:{
+labels:['Platform 1'],
+datasets:[{
+label:'People Count',
+data:[0],
+backgroundColor:'#f39c12'
+}]
+}
+}
+)
+
+
+/* NEW GRAPH: CROWD GROWTH */
+
+const growthChart = new Chart(
+document.getElementById('growthChart'),
+{
+type:'line',
+data:{
+labels:[],
+datasets:[{
+label:'Growth Rate',
+data:[],
+borderColor:'#9b59b6',
+fill:false
+}]
+}
+}
+)
+
+
+/* NEW GRAPH: SAFETY RISK */
+
+const riskChart = new Chart(
+document.getElementById('riskChart'),
+{
+type:'radar',
+data:{
+labels:['Crowd Density','Movement','Safety','Risk'],
+datasets:[{
+label:'Risk Level',
+data:[1,1,1,1],
+backgroundColor:'rgba(231,76,60,0.2)',
+borderColor:'#e74c3c'
+}]
+}
+}
+)
+
+
+
+let lastPeople = 0
+
+setInterval(function(){
+
+fetch("/live_data")
+.then(response => response.json())
+.then(data => {
+
+document.getElementById("livePeople").innerText = data.people
+document.getElementById("liveStatus").innerText = data.status
+
+
+crowdChart.data.datasets[0].data = [data.people]
+crowdChart.update()
+
+
+hourChart.data.labels.push(new Date().toLocaleTimeString())
+hourChart.data.datasets[0].data.push(data.people)
+
+if(hourChart.data.labels.length > 10){
+
+hourChart.data.labels.shift()
+hourChart.data.datasets[0].data.shift()
+
+}
+
+hourChart.update()
+
+
+if(data.status == "HIGH"){
+
+alertChart.data.datasets[0].data = [0,1]
+
+}
+else{
+
+alertChart.data.datasets[0].data = [1,0]
+
+}
+
+alertChart.update()
+
+
+platformChart.data.datasets[0].data = [data.people]
+platformChart.update()
+
+
+/* CROWD GROWTH CALCULATION */
+
+let growth = data.people - lastPeople
+lastPeople = data.people
+
+growthChart.data.labels.push(new Date().toLocaleTimeString())
+growthChart.data.datasets[0].data.push(growth)
+
+if(growthChart.data.labels.length > 10){
+
+growthChart.data.labels.shift()
+growthChart.data.datasets[0].data.shift()
+
+}
+
+growthChart.update()
+
+
+/* SAFETY RISK */
+
+let riskLevel = data.people / 10
+
+riskChart.data.datasets[0].data = [
+riskLevel,
+riskLevel,
+riskLevel,
+riskLevel
+]
+
+riskChart.update()
+
+
+})
+
+},2000)
+
+</script>
+
+</body>
+</html>
