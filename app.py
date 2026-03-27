@@ -16,10 +16,10 @@ model=YOLO("yolov8n.pt")
 #  TWILIO CONFIG — PUT YOUR DETAILS
 # =========================================================
 
-ACCOUNT_SID = "ACbf3f1d7858a52b2d3ffaea5c0a77df34"
-AUTH_TOKEN = "5625b59e2df18b243804e0947afee024"
-TWILIO_PHONE = "+17374377972"   # Twilio number
-USER_PHONE = "+919182758423"    # Your mobile number
+ACCOUNT_SID = ""
+AUTH_TOKEN = ""
+TWILIO_PHONE = "+"   # Twilio number
+USER_PHONE = "+91"    # Your mobile number
 
 client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
@@ -33,7 +33,7 @@ alert_sent=False
 video_source=0
 current_people=0
 alert_threshold=15
-authority_phone="+919182758423"
+authority_phone="+91"
 last_sms_time=0
 sms_cooldown=30
 
